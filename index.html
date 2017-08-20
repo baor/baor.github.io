@@ -1,21 +1,51 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>Hello!</title>
+    <title>Hello!</title>
 </head>
+
 <body>
-<script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
-<script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyCchEZCvHT73GLyCpp04I13KWoB26GJyAw",
-    authDomain: "mytestproject-591a2.firebaseapp.com",
-    databaseURL: "https://mytestproject-591a2.firebaseio.com",
-    projectId: "mytestproject-591a2",
-    storageBucket: "",
-    messagingSenderId: "223213383869"
-  };
-  firebase.initializeApp(config);
-</script>
-<h1>Hello!</h1>
+    <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+    <script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyCchEZCvHT73GLyCpp04I13KWoB26GJyAw",
+        authDomain: "mytestproject-591a2.firebaseapp.com",
+        databaseURL: "https://mytestproject-591a2.firebaseio.com",
+        storageBucket: "mytestproject-591a2.bucket",
+    };
+    firebase.initializeApp(config);
+    var database = firebase.database();
+    </script>
+    <script>
+    function UploadData() {
+        database.ref("data").set({ text: new Date().toLocaleString() });
+    }
+
+    function ReadData() {
+        return firebase.database().ref("data").once('value').then(function(snapshot) {
+            return snapshot.val().text;
+        });
+    }
+    </script>
+    <script>
+    function PrintData() {
+        var node = document.createElement("LI");
+        ReadData().then(
+            function(text) {
+                var textnode = document.createTextNode(text);
+                node.appendChild(textnode);
+                document.getElementById("myList").appendChild(node);
+            });
+    }
+    </script>
+    <h1>Hello!</h1>
+    <ul id="myList">
+        <li>Coffee</li>
+        <li>Tea</li>
+    </ul>
+    <button onclick="UploadData()">Upload</button>
+    <button onclick="PrintData()">Print</button>
 </body>
+</html>
