@@ -17,6 +17,16 @@
     };
     firebase.initializeApp(config);
     var database = firebase.database();
+    var provider = new firebase.auth.GithubAuthProvider();
+    firebase.auth().signInWithPopup(provider).then(function(result) {
+        var token = result.credential.accessToken;
+        var user = result.user;
+    }).catch(function(error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        var email = error.email;
+        var credential = error.credential;
+    });
     </script>
     <script>
     function UploadData() {
@@ -48,4 +58,5 @@
     <button onclick="UploadData()">Upload</button>
     <button onclick="PrintData()">Print</button>
 </body>
+
 </html>
